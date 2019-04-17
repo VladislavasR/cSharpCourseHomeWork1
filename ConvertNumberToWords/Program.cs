@@ -25,7 +25,14 @@ namespace ConvertNumberToWords
                 if (CheckIfGoodNumber(numberInput))
                 {
                     checkNumber = Convert.ToInt32(numberInput);
-                    Console.WriteLine(ChangeNumberToText(checkNumber));
+                    if (CheckIfNumberInRange(checkNumber, FROM_NUMBER, TO_NUMBER))
+                    {
+                        Console.WriteLine(GetNumberSign(checkNumber) + ChangeNumberToText(checkNumber));
+                    }
+                    else
+                    {
+                        Console.WriteLine("Number is out of range");
+                    }
                 }
                 else if (CheckIfGoodNumber(numberInput) == false && !numberInput.Equals(" "))
                 {
@@ -39,11 +46,6 @@ namespace ConvertNumberToWords
         static string ChangeNumberToText(int number)
         {
             string oneNumber = "";
-            string numberSign = "";
-            if (number < 0)
-            {
-                numberSign = "Minus ";
-            }
             switch (Math.Abs(number))
             {
                 case 0:
@@ -110,15 +112,115 @@ namespace ConvertNumberToWords
                     oneNumber = "dar nesugalvotas";
                     break;
             }
-            return numberSign + oneNumber;
+            return oneNumber;
+        }
+        //static string ChangeNumberToTextV2(int number)
+        //{
+        //    string oneNumber = "";
+        //    string tensNumber = "";
+        //    number = Math.Abs(number);
+        //    if (number >= 20 && number < 100)
+        //    {
+        //        tensNumber = ChangeTensToText(number);
+        //        string numberText = Convert.ToString(number);
+        //    }
+        //    return oneNumber;
+        //}
+
+        static string GetNumberSign(int number)
+        {
+            string numberSign = "";
+            return number < 0 ? numberSign = "Minus " : numberSign;
+        }
+
+        static string ChangeOnesToText(int number)
+        {
+            string oneNumber = "";
+            switch (Math.Abs(number))
+            {
+                case 0:
+                    oneNumber = "Nulis";
+                    break;
+                case 1:
+                    oneNumber = "vienas";
+                    break;
+                case 2:
+                    oneNumber = "du";
+                    break;
+                case 3:
+                    oneNumber = "trys";
+                    break;
+                case 4:
+                    oneNumber = "keturi";
+                    break;
+                case 5:
+                    oneNumber = "penki";
+                    break;
+                case 6:
+                    oneNumber = "sesi";
+                    break;
+                case 7:
+                    oneNumber = "septyni";
+                    break;
+                case 8:
+                    oneNumber = "astuoni";
+                    break;
+                case 9:
+                    oneNumber = "devyni";
+                    break;
+                default:
+                    oneNumber = "skaicius ne vienzenklis";
+                    break;
+            }
+            return oneNumber;
+        }
+
+        static string ChangeTensToText(int number)
+        {
+            number = Math.Abs(number);
+            string oneNumber = "";
+            if (number >= 20 && number < 30)
+            {
+                oneNumber = "dvidesimt";
+            }
+            else if (number >= 30 && number < 40)
+            {
+                oneNumber = "trisdesimt";
+            }
+            else if (number >= 40 && number < 50)
+            {
+                oneNumber = "keturiasdesimt";
+            }
+            else if (number >= 50 && number < 60)
+            {
+                oneNumber = "penkiasdesimt";
+            }
+            else if (number >= 60 && number < 70)
+            {
+                oneNumber = "sesiassdesimt";
+            }
+            else if (number >= 70 && number < 80)
+            {
+                oneNumber = "septyniasdesimt";
+            }
+            else if (number >= 80 && number < 90)
+            {
+                oneNumber = "astuoniasdesimt";
+            }
+            else if (number >= 90 && number < 100)
+            {
+                oneNumber = "devyniasdesimt";
+            }
+            return oneNumber;
         }
 
         static bool CheckIfGoodNumber(string numberText)
         {
             int numberSymbol = 0;
+            int numberSignCount = 0;
             if (numberText.Length != 0 && numberText[0].Equals('-'))
             {
-                numberSymbol++;
+                numberSignCount++;
             }
             for (int i = 0; i < numberText.Length; i++)
             {
@@ -128,7 +230,7 @@ namespace ConvertNumberToWords
                     numberSymbol++;
                 }
             }
-            if (numberSymbol == numberText.Length && !numberText.Equals(""))
+            if (numberSymbol + numberSignCount == numberText.Length && !numberText.Equals(""))
             {
                 return true;
             }
@@ -138,9 +240,9 @@ namespace ConvertNumberToWords
             }
         }
 
-        static bool CheckIfNumberInRange(int number)
+        static bool CheckIfNumberInRange(int number, int rangeStart, int rangeEnd)
         {
-            return number >= -9 && number <= 9 ? true : false;
+            return number >= rangeStart && number <= rangeEnd ? true : false;
         }
 
         // idejos kitom funkcijoms
